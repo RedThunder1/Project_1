@@ -1,4 +1,3 @@
-from fileinput import close
 from tkinter import *
 from tkinter.font import Font
 import csv
@@ -49,6 +48,17 @@ class GUI:
         if entered_id == '' or vote == 0:
             self.alert_label["text"] = "Please fill out all entries!"
             self.alert_label["fg"] = "red"
+            self.id_input.delete(0, END)
+            return
+
+        #ID must be 4 numbers
+        try:
+            entered_id = int(entered_id)
+            if len(str(entered_id)) != 4:
+                raise Exception
+        except:
+            self.alert_label["text"] = "ID must be a number with a\nlength of 4"
+            self.alert_label["fg"] = "red"
             return
 
         vote = 'Jane' if vote == 1 else 'John'
@@ -63,7 +73,7 @@ class GUI:
                 writer.writerow(['ID', 'Vote'])
             else:
                 for line in lines:
-                    if entered_id in line:
+                    if str(entered_id) in line:
                         self.alert_label['text'] = "Already voted"
                         self.alert_label['fg'] = 'red'
                         return
